@@ -24,12 +24,10 @@ Keymint defines metainformation for keys, their certificats,
 and provides tooling to build these federated keystores together.""",
     license='Apache License, Version 2.0',
     test_suite='test',
-    # package_data={
-    #     'keymint_package': [
-    #         'template/environment_hook/*',
-    #         'template/isolated_prefix_level/*',
-    #         'template/package_level/*',
-    #         'template/prefix_level/*',
-    #     ],
-    # },
+    package_data={
+        'keymint_package': [
+            'template/dds/*',
+            'template/keyage/*',
+        ],
+    },
 )
