@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dds>
+<keyage xmlns:col="http://example.com/ns/collection"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://example.com/ns/collection keyage.xsd">
     <permissions>
-        <grant name="ParticipantA">
-            <subject_name>C=US, ST=CA, O=Real Time Innovations, CN=dtlsexample/emailAddress=me@rti.com</subject_name>
+        <grant name="talker">
+            <subject_name>C=US, ST=CA, O=Acme, CN=dtlsexample/emailAddress=acme@acme.acme</subject_name>
             <validity>
                 <not_before>2013-06-01T13:00:00</not_before>
                 <not_after>2023-06-01T13:00:00</not_after>
@@ -11,77 +13,67 @@
                 <domains>
                     <id>0</id>
                 </domains>
-                <publish>
+                <ros_publish>
                     <topics>
-                        <topic>Cir*</topic>
+                        <topic>/chatter</topic>
+                        <topic>/rosout</topic>
                     </topics>
-                    <partitions>
-                        <partition>P1*</partition>
-                    </partitions>
-                </publish>
-                <subscribe>
-                    <topics>
-                        <topic>Sq*</topic>
-                    </topics>
-                    <partitions>
-                        <partition>P2*</partition>
-                    </partitions>
-                </subscribe>
-                <subscribe>
-                    <topics>
-                        <topic>Triangle</topic>
-                    </topics>
-                    <partitions>
-                        <partition>P*</partition>
-                    </partitions>
-                </subscribe>
+                </ros_publish>
             </allow_rule>
-            <default>ALLOW</default>
+            <default>DENY</default>
         </grant>
-        <grant name="ParticipantA_DSA">
-            <subject_name>C=US, ST=CA, O=Real Time Innovations, CN=dtlsexampledsa/emailAddress=medsa@rti.com</subject_name>
-            <validity>
-                <not_before>2013-06-01T13:00:00</not_before>
-                <not_after>2023-06-01T13:00:00</not_after>
-            </validity>
+        <grant name="listener">
             <allow_rule>
-                <domains>
-                    <id>0</id>
-                </domains>
-                <publish>
+                <ros_subscribe>
                     <topics>
-                        <topic>Cir*</topic>
+                        <topic>/chatter</topic>
                     </topics>
-                    <partitions>
-                        <partition>P1*</partition>
-                    </partitions>
-                </publish>
+                </ros_subscribe>
+            </allow_rule>
+            <default>DENY</default>
+        </grant>
+        <grant name="orical">
+            <allow_rule>
+                <ros_call>
+                    <services>
+                        <service>/add_two_ints</service>
+                    </services>
+                </ros_call>
+                <ros_execute>
+                    <services>
+                        <service>/add_two_ints</service>
+                    </services>
+                </ros_execute>
+                <ros_request>
+                    <actions>
+                        <action>/fibonacci</action>
+                    </actions>
+                </ros_request>
+                <ros_operate>
+                    <actions>
+                        <action>/fibonacci</action>
+                    </actions>
+                </ros_operate>
+                <ros_read>
+                    <parameters>
+                        <parameter>/my_param</parameter>
+                    </parameters>
+                </ros_read>
+                <ros_write>
+                    <parameters>
+                        <parameter>/my_param</parameter>
+                    </parameters>
+                </ros_write>
                 <subscribe>
                     <topics>
-                        <topic>Sq*</topic>
+                        <topic>chatter_raw</topic>
                     </topics>
                     <partitions>
-                        <partition>P2*</partition>
-                    </partitions>
-                </subscribe>
-                <subscribe>
-                    <topics>
-                        <topic>Triangle</topic>
-                    </topics>
-                    <partitions>
-                        <partition>P*</partition>
+                        <partition>robot/42</partition>
                     </partitions>
                 </subscribe>
             </allow_rule>
-            <default>ALLOW</default>
-        </grant>
-        <grant name="ParticipantA_ECDSA">
-            <subject_name>C=US, ST=CA, O=Real Time Innovations, CN=dtlsexampleECdsa/emailAddress=meECdsa@rti.com</subject_name>
-            <validity>
-                <not_before>2014-06-01T13:00:00</not_before>
-                <not_after>2034-06-01T13:00:00</not_after>
-            </validity>
-            <default>ALLOW</default>
+            <default>DENY</default>
         </grant>
     </permissions>
-</dds>
+</keyage>
