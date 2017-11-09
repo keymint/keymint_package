@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<keyage xmlns:col="http://example.com/ns/collection"
-            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:schemaLocation="http://example.com/ns/collection keyage.xsd">
+<keyage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://example.com/ns/collection/keyage.xsd"
+    format="1">
     <permissions>
         <grant name="talker">
             <subject_name>C=US, ST=CA, O=Acme, CN=dtlsexample/emailAddress=acme@acme.acme</subject_name>
