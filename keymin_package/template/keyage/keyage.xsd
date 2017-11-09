@@ -9,7 +9,8 @@
         <xs:sequence minOccurs="1" maxOccurs="1">
             <xs:element name="version" type="VersionType" minOccurs="0"/>
             <xs:element name="description" type="DescriptionType" minOccurs="0"/>
-            <xs:element name="permissions" type="Permissions" />
+            <xs:element name="permissions" type="Permissions" minOccurs="0"/>
+            <xs:element name="export" type="ExportType" minOccurs="0"/>
         </xs:sequence>
         <xs:attribute name="format" fixed="1" use="required"/>
     </xs:complexType>
@@ -36,6 +37,16 @@
             <xs:any processContents="skip" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
+
+    <xs:complexType name="ExportType">
+        <xs:sequence minOccurs="1" maxOccurs="1">
+            <xs:element name="build_type" type="BuildType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="BuildType">
+        <xs:restriction base="xs:string" />
+    </xs:simpleType>
 
     <xs:complexType name="Permissions">
         <xs:sequence minOccurs="1" maxOccurs="unbounded">

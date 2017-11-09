@@ -76,4 +76,7 @@
             <default>DENY</default>
         </grant>
     </permissions>
+    <export>
+        <build_type>keymint</build_type>
+    </export>
 </keyage>
