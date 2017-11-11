@@ -90,6 +90,7 @@ def parse_package_string(data, *, filename=None):
     :raises: :exc:`InvalidPackage`
     """
     from attrdict import AttrDict
+    from collections import OrderedDict
     from copy import deepcopy
     import xmlschema
 
@@ -113,12 +114,14 @@ def parse_package_string(data, *, filename=None):
                 msg = 'The manifest contains invalid XML:\n'
             raise InvalidPackage(msg + str(ex))
     else:
-        keyage_dict = keyage_schema.to_dict(data)
+        keyage_dict = keyage_schema.to_dict(data, dict_class=OrderedDict)
 
     pkg = Package(filename=filename)
     pkg.string = data
     pkg.dict = keyage_dict
-    pkg.permissions = AttrDict(deepcopy(keyage_dict['permissions']))
+    # TODO test this thoroughly to make sure order in odered dict is maintained!
+    # as the order of grants and rules mater for specifying priority
+    pkg.permissions = AttrDict(deepcopy(keyage_dict)).permissions
 
 
 # format attribute

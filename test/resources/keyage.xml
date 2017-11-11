@@ -10,6 +10,17 @@
                 <not_before>2013-06-01T13:00:00</not_before>
                 <not_after>2023-06-01T13:00:00</not_after>
             </validity>
+            <deny_rule>
+                <domains>
+                    <id>0</id>
+                </domains>
+                <ros_publish>
+                    <topics>
+                        <topic>/chatter/*</topic>
+                        <topic>/rosout/*</topic>
+                    </topics>
+                </ros_publish>
+            </deny_rule>
             <allow_rule>
                 <domains>
                     <id>0</id>
