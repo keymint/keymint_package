@@ -2,6 +2,7 @@
 <keyage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="http://example.com/ns/collection/keyage.xsd"
     format="1">
+    <name>foo/bar</name>
     <permissions>
         <grant name="talker">
             <subject_name>C=US, ST=CA, O=Acme, CN=dtlsexample/emailAddress=acme@acme.acme</subject_name>

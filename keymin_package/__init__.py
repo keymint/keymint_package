@@ -137,7 +137,7 @@ def parse_package_string(data, *, filename=None):
          format=pkg.package_format)
 
     # name
-    # pkg.name = _get_node_value(_get_node(root, 'name'))
+    pkg.name = keyage_dict['name']
 
     # version
     # version_node = _get_node(root, 'version')

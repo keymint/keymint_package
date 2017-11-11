@@ -7,6 +7,7 @@
     <xs:element name="keyage" type="Keyage" />
     <xs:complexType name="Keyage">
         <xs:sequence minOccurs="1" maxOccurs="1">
+            <xs:element name="name" type="NameType" minOccurs="1"/>
             <xs:element name="version" type="VersionType" minOccurs="0"/>
             <xs:element name="description" type="DescriptionType" minOccurs="0"/>
             <xs:element name="permissions" type="Permissions" minOccurs="0"/>
@@ -14,6 +15,17 @@
         </xs:sequence>
         <xs:attribute name="format" fixed="1" use="required"/>
     </xs:complexType>
+
+    <xs:simpleType name="NameType">
+        <xs:annotation>
+            <xs:documentation>
+                The package name should be unique within the workspace.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:token">
+            <xs:pattern value="([^/ ]+/*)+(?&lt;!/)"/>
+        </xs:restriction>
+    </xs:simpleType>
 
     <xs:simpleType name="VersionType">
         <xs:annotation>
