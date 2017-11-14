@@ -3,103 +3,15 @@
     xsi:noNamespaceSchemaLocation="http://example.com/ns/collection/keyage.xsd"
     format="1">
     <name>foo/bar</name>
-    <permissions>
-        <grant name="talker">
-            <subject_name>C=US, ST=CA, O=Acme, CN=dtlsexample/emailAddress=acme@acme.acme</subject_name>
-            <validity>
-                <not_before>2013-06-01T13:00:00</not_before>
-                <not_after>2023-06-01T13:00:00</not_after>
-            </validity>
-            <deny_rule>
-                <domains>
-                    <id>0</id>
-                </domains>
-                <ros_publish>
-                    <topics>
-                        <topic>/chatter/1</topic>
-                        <topic>/rosout/1</topic>
-                    </topics>
-                </ros_publish>
-            </deny_rule>
-            <allow_rule>
-                <domains>
-                    <id>0</id>
-                </domains>
-                <ros_publish>
-                    <topics>
-                        <topic>/chatter</topic>
-                        <topic>/rosout</topic>
-                    </topics>
-                </ros_publish>
-            </allow_rule>
-            <deny_rule>
-                <domains>
-                    <id>0</id>
-                </domains>
-                <ros_publish>
-                    <topics>
-                        <topic>/chatter/2</topic>
-                        <topic>/rosout/2</topic>
-                    </topics>
-                </ros_publish>
-            </deny_rule>
-            <default>DENY</default>
-        </grant>
-        <grant name="listener">
-            <allow_rule>
-                <ros_subscribe>
-                    <topics>
-                        <topic>/chatter</topic>
-                    </topics>
-                </ros_subscribe>
-            </allow_rule>
-            <default>DENY</default>
-        </grant>
-        <grant name="orical">
-            <allow_rule>
-                <ros_call>
-                    <services>
-                        <service>/add_two_ints</service>
-                    </services>
-                </ros_call>
-                <ros_execute>
-                    <services>
-                        <service>/add_two_ints</service>
-                    </services>
-                </ros_execute>
-                <ros_request>
-                    <actions>
-                        <action>/fibonacci</action>
-                    </actions>
-                </ros_request>
-                <ros_operate>
-                    <actions>
-                        <action>/fibonacci</action>
-                    </actions>
-                </ros_operate>
-                <ros_read>
-                    <parameters>
-                        <parameter>/my_param</parameter>
-                    </parameters>
-                </ros_read>
-                <ros_write>
-                    <parameters>
-                        <parameter>/my_param</parameter>
-                    </parameters>
-                </ros_write>
-                <subscribe>
-                    <topics>
-                        <topic>chatter_raw</topic>
-                    </topics>
-                    <partitions>
-                        <partition>robot/42</partition>
-                    </partitions>
-                </subscribe>
-            </allow_rule>
-            <default>DENY</default>
-        </grant>
+    <permissions format="keymint_ros2_dds">
+        <permission>
+          <path>permissions1.xml</path>
+        </permission>
+        <permission>
+          <path>permissions2.xml</path>
+        </permission>
     </permissions>
     <export>
-        <build_type>keymint</build_type>
+        <build_type>keymint_ros2_dds</build_type>
     </export>
 </keyage>

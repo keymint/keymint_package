@@ -26,6 +26,8 @@ try:
 except ImportError:
     __version__ = 'unset'
 
+import os
+
 PACKAGE_MANIFEST_FILENAME = 'keyage.xml'
 
 
@@ -57,7 +59,7 @@ def parse_package(path):
 
     with open(filename, 'r', encoding='utf-8') as f:
         try:
-            return parse_package_string(f.read(), filename=filename)
+            return parse_package_string(f.read(), path, filename=filename)
         except InvalidPackage as e:
             e.args = [
                 "Invalid package manifest '%s': %s" %
@@ -80,7 +82,20 @@ def package_exists_at(path):
         os.path.join(path, PACKAGE_MANIFEST_FILENAME))
 
 
-def parse_package_string(data, *, filename=None):
+def check_schema(schema, data, filename=None):
+    from .exceptions import InvalidPackage
+    if not schema.is_valid(data):
+        try:
+            schema.validate(data)
+        except Exception as ex:
+            if filename is not None:
+                msg = "The manifest '%s' contains invalid XML:\n" % filename
+            else:
+                msg = 'The manifest contains invalid XML:\n'
+            raise InvalidPackage(msg + str(ex))
+
+
+def parse_package_string(data, path, *, filename=None):
     """
     Parse keyage.xml string contents.
 
@@ -95,7 +110,6 @@ def parse_package_string(data, *, filename=None):
     import xmlschema
     import xml.etree.ElementTree as ElementTree
 
-    from .exceptions import InvalidPackage
     # from .export import Export
     from .package import Package
     # from .person import Person
@@ -105,18 +119,8 @@ def parse_package_string(data, *, filename=None):
     keyage_xsd_path = get_keyage_template_path('keyage.xsd')
     keyage_schema = xmlschema.XMLSchema(keyage_xsd_path)
 
-    if not keyage_schema.is_valid(data):
-        try:
-            keyage_schema.validate(data)
-        except Exception as ex:
-            if filename is not None:
-                msg = "The manifest '%s' contains invalid XML:\n" % filename
-            else:
-                msg = 'The manifest contains invalid XML:\n'
-            raise InvalidPackage(msg + str(ex))
-    else:
-        # keyage_dict = keyage_schema.to_dict(data, dict_class=OrderedDict)
-        keyage_tree = ElementTree.ElementTree(ElementTree.fromstring(data))
+    check_schema(keyage_schema, data, filename)
+    keyage_tree = ElementTree.ElementTree(ElementTree.fromstring(data))
 
     pkg = Package(filename=filename)
     pkg.string = data
@@ -124,7 +128,6 @@ def parse_package_string(data, *, filename=None):
     pkg.tree = keyage_tree
 
     root = keyage_tree.getroot()
-    pkg.permissions = root.find('permissions')
     pkg.export = root.find('export')
 
     # format attribute
@@ -144,6 +147,20 @@ def parse_package_string(data, *, filename=None):
 
     # name
     pkg.name = root.find('name').text
+
+    permissions_xsd_path = get_keyage_template_path('permissions.xsd')
+    permissions_schema = xmlschema.XMLSchema(permissions_xsd_path)
+
+    permissions = ElementTree.Element('permissions')
+    for permission in root.find('permissions').getchildren():
+        permission_path = os.path.join(path, permission.find('path').text)
+        with open(permission_path, 'r') as f:
+            permission_data = f.read()
+        check_schema(permissions_schema, permission_data, permission_path)
+        permission_root = ElementTree.fromstring(permission_data)
+        permission_grants = permission_root.findall('permissions/grant')
+        permissions.extend(permission_grants)
+    pkg.permissions = permissions
 
     # version
     # version_node = _get_node(root, 'version')

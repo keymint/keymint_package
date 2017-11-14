@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<keyage>
+    <permissions>
+        <grant name="orical">
+            <allow_rule>
+                <ros_call>
+                    <services>
+                        <service>/add_two_ints</service>
+                    </services>
+                </ros_call>
+                <ros_execute>
+                    <services>
+                        <service>/add_two_ints</service>
+                    </services>
+                </ros_execute>
+                <ros_request>
+                    <actions>
+                        <action>/fibonacci</action>
+                    </actions>
+                </ros_request>
+                <ros_operate>
+                    <actions>
+                        <action>/fibonacci</action>
+                    </actions>
+                </ros_operate>
+                <ros_read>
+                    <parameters>
+                        <parameter>/my_param</parameter>
+                    </parameters>
+                </ros_read>
+                <ros_write>
+                    <parameters>
+                        <parameter>/my_param</parameter>
+                    </parameters>
+                </ros_write>
+                <subscribe>
+                    <topics>
+                        <topic>chatter_raw</topic>
+                    </topics>
+                    <partitions>
+                        <partition>robot/42</partition>
+                    </partitions>
+                </subscribe>
+            </allow_rule>
+            <default>DENY</default>
+        </grant>
+    </permissions>
+</keyage>

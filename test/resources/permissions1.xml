@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<keyage>
+    <permissions>
+        <grant name="talker">
+            <subject_name>C=US, ST=CA, O=Acme, CN=dtlsexample/emailAddress=acme@acme.acme</subject_name>
+            <validity>
+                <not_before>2013-06-01T13:00:00</not_before>
+                <not_after>2023-06-01T13:00:00</not_after>
+            </validity>
+            <deny_rule>
+                <domains>
+                    <id>0</id>
+                </domains>
+                <ros_publish>
+                    <topics>
+                        <topic>/chatter/1</topic>
+                        <topic>/rosout/1</topic>
+                    </topics>
+                </ros_publish>
+            </deny_rule>
+            <allow_rule>
+                <domains>
+                    <id>0</id>
+                </domains>
+                <ros_publish>
+                    <topics>
+                        <topic>/chatter</topic>
+                        <topic>/rosout</topic>
+                    </topics>
+                </ros_publish>
+            </allow_rule>
+            <deny_rule>
+                <domains>
+                    <id>0</id>
+                </domains>
+                <ros_publish>
+                    <topics>
+                        <topic>/chatter/2</topic>
+                        <topic>/rosout/2</topic>
+                    </topics>
+                </ros_publish>
+            </deny_rule>
+            <default>DENY</default>
+        </grant>
+        <grant name="listener">
+            <allow_rule>
+                <ros_subscribe>
+                    <topics>
+                        <topic>/chatter</topic>
+                    </topics>
+                </ros_subscribe>
+            </allow_rule>
+            <default>DENY</default>
+        </grant>
+    </permissions>
+</keyage>
