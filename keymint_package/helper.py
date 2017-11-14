@@ -41,8 +41,107 @@ def pretty_xml(element):
     return xmlstr.decode('utf-8')
 
 
+class NamespacesHelper:
+    """Help build namespaces into artifacts."""
+
+    def __init__(self):
+        pass
+
+
+class DDSNamespacesHelper(NamespacesHelper):
+    """Help build namespaces into artifacts."""
+
+    def __init__(self):
+        pass
+
+    def topic(self, ros_topic):
+        topic = ElementTree.Element('topic')
+        topic.text = 'rt' + ros_topic.text.replace('/', '__')
+        return topic
+
+
+class CriteriasHelpter:
+    """Help build criteria into artifacts."""
+
+    def __init__(self):
+        pass
+
+
+class DDSCriteriasHelper(CriteriasHelpter):
+    """Help build permission into artifacts."""
+
+    _dds_expression_list_types = ['partitions', 'data_tags']
+
+    def __init__(self):
+        self.dds_namespaces_helper = DDSNamespacesHelper()
+
+    def _dds_expressions(self, dds_criteria, dds_criterias):
+        for dds_criteria in dds_criterias:
+            dds_criteria.append(expression_list)
+
+    def topics(self, expression_list):
+        topics = ElementTree.Element('topics')
+        for expression in expression_list.getchildren():
+            formater = getattr(self.dds_namespaces_helper, expression.tag)
+            expression = formater(expression)
+            topics.append(expression)
+        return topics
+
+    def ros_publish(self, context, criteria):
+        dds_publish = ElementTree.Element('publish')
+        dds_criterias = []
+        dds_criterias.append(dds_publish)
+        for expression_list in criteria.getchildren():
+            if expression_list.tag in self._dds_expression_list_types:
+                self._dds_expressions(dds_criteria, dds_criterias)
+                continue
+            else:
+                formater = getattr(self, expression_list.tag)
+                expression_list = formater(expression_list)
+                dds_publish.append(expression_list)
+        return dds_criterias
+
+    def ros_subscribe(self, context, criteria):
+        dds_subscribe = ElementTree.Element('subscribe')
+        dds_criterias = []
+        dds_criterias.append(dds_subscribe)
+        for expression_list in criteria.getchildren():
+            if expression_list.tag in self._dds_expression_list_types:
+                self._dds_expressions(dds_criteria, dds_criterias)
+                continue
+            else:
+                formater = getattr(self, expression_list.tag)
+                expression_list = formater(expression_list)
+                dds_subscribe.append(expression_list)
+        return dds_criterias
+
+    def ros_call(self, context, criteria):
+        # TODO
+        return []
+
+    def ros_execute(self, context, criteria):
+        # TODO
+        return []
+
+    def ros_request(self, context, criteria):
+        # TODO
+        return []
+
+    def ros_operate(self, context, criteria):
+        # TODO
+        return []
+
+    def ros_read(self, context, criteria):
+        # TODO
+        return []
+
+    def ros_write(self, context, criteria):
+        # TODO
+        return []
+
+
 class PermissionsHelper:
-    """Interprite the permission into artifacts."""
+    """Help build permission into artifacts."""
 
     def __init__(self):
         pass
@@ -52,10 +151,10 @@ class PermissionsHelper:
 
 
 class DDSPermissionsHelper(PermissionsHelper):
-    """Help interprite permission into artifacts."""
+    """Help build permission into artifacts."""
 
     def __init__(self):
-        pass
+        self.dds_criterias_helper = DDSCriteriasHelper()
         # self.namespaces = {
         #     'xmlns:xsi':
         #         'http://www.w3.org/2001/XMLSchema-instance',
@@ -66,29 +165,8 @@ class DDSPermissionsHelper(PermissionsHelper):
         # self.permissions_schema = xmlschema.XMLSchema(permissions_xsd_path)
 
     def _build_criterias(self, context, criteria):
-        # TODO
-        dds_criterias = []
-        if criteria.tag == 'ros_publish':
-            dds_publish = ElementTree.Element('publish')
-            dds_criterias.append(dds_publish)
-            # dds_subscribe = ElementTree.Element('subscribe')
-            # dds_relay = ElementTree.Element('relay')
-
-            for expression_list in criteria.getchildren():
-
-                if expression_list.tag in ['partitions', 'data_tags']:
-                    for dds_criteria in dds_criterias:
-                        dds_criteria.append(expression_list)
-                    continue
-                else:
-                    # TODO expand
-                    expression_list.tag = 'topics'
-                    dds_publish.append(expression_list)
-                    dds_criterias.append(dds_publish)
-                    # dds_topic_expression_list = ElementTree.Element('topics')
-                    # dds_topic_expression_list = ElementTree.Element('partitions')
-                    # dds_topic_expression_list = ElementTree.Element('data_tags')
-        return dds_criterias
+        formater = getattr(self.dds_criterias_helper, criteria.tag)
+        return formater(context, criteria)
 
     def _build_rule(self, context, rule):
         dds_rule = ElementTree.Element(rule.tag)
@@ -130,14 +208,16 @@ class DDSPermissionsHelper(PermissionsHelper):
             dds_grant.append(validity)
             grant.remove(validity)
 
+        default = grant.find('default')
+        if default is not None:
+            grant.remove(default)
+
         for rule in grant.getchildren():
             dds_rule = self._build_rule(context, rule)
             dds_grant.append(dds_rule)
 
-        default = grant.find('default')
         if default is not None:
             dds_grant.append(default)
-            grant.remove(default)
 
         return dds_grant
 
@@ -150,5 +230,4 @@ class DDSPermissionsHelper(PermissionsHelper):
             dds_permissions.append(dds_grant)
 
         dds_permissions = tidy_xml(dds_permissions)
-        xmlstr = pretty_xml(dds_permissions)
-        print(xmlstr)
+        return pretty_xml(dds_permissions)
