@@ -93,6 +93,7 @@ def parse_package_string(data, *, filename=None):
     from collections import OrderedDict
     from copy import deepcopy
     import xmlschema
+    import xml.etree.ElementTree as ElementTree
 
     from .exceptions import InvalidPackage
     # from .export import Export
@@ -114,18 +115,20 @@ def parse_package_string(data, *, filename=None):
                 msg = 'The manifest contains invalid XML:\n'
             raise InvalidPackage(msg + str(ex))
     else:
-        keyage_dict = keyage_schema.to_dict(data, dict_class=OrderedDict)
+        # keyage_dict = keyage_schema.to_dict(data, dict_class=OrderedDict)
+        keyage_tree = ElementTree.ElementTree(ElementTree.fromstring(data))
 
     pkg = Package(filename=filename)
     pkg.string = data
-    pkg.dict = keyage_dict
-    # TODO test this thoroughly to make sure order in odered dict is maintained!
-    # as the order of grants and rules mater for specifying priority
-    pkg.permissions = AttrDict(deepcopy(keyage_dict)).permissions
+    # pkg.dict = keyage_dict
+    pkg.tree = keyage_tree
 
+    root = keyage_tree.getroot()
+    pkg.permissions = root.find('permissions')
+    pkg.export = root.find('export')
 
-# format attribute
-    value = keyage_dict['@format']
+    # format attribute
+    value = root.get('format')
     pkg.package_format = int(value)
     assert pkg.package_format > 0, \
         ("Unable to handle '{filename}' format version '{format}', please update the "
@@ -140,7 +143,7 @@ def parse_package_string(data, *, filename=None):
          format=pkg.package_format)
 
     # name
-    pkg.name = keyage_dict['name']
+    pkg.name = root.find('name').text
 
     # version
     # version_node = _get_node(root, 'version')

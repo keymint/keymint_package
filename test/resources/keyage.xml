@@ -16,8 +16,8 @@
                 </domains>
                 <ros_publish>
                     <topics>
-                        <topic>/chatter/*</topic>
-                        <topic>/rosout/*</topic>
+                        <topic>/chatter/1</topic>
+                        <topic>/rosout/1</topic>
                     </topics>
                 </ros_publish>
             </deny_rule>
@@ -32,6 +32,17 @@
                     </topics>
                 </ros_publish>
             </allow_rule>
+            <deny_rule>
+                <domains>
+                    <id>0</id>
+                </domains>
+                <ros_publish>
+                    <topics>
+                        <topic>/chatter/2</topic>
+                        <topic>/rosout/2</topic>
+                    </topics>
+                </ros_publish>
+            </deny_rule>
             <default>DENY</default>
         </grant>
         <grant name="listener">

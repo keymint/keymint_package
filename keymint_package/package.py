@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from copy import deepcopy
 import re
 
 from .exceptions import InvalidPackage
@@ -30,11 +29,13 @@ class Package:
         'licenses',
         'urls',
         'authors',
-        'permission',
+        'permissions',
         'identity',
         'governance',
         'string',
         'dict',
+        'tree',
+        'export',
         'filename',
     ]
 
@@ -43,17 +44,13 @@ class Package:
         Constructor.
 
         :param filename: location of keyage.xml.  Necessary if
-          converting ``${prefix}`` in ``<export>`` values, ``str``.
+        converting ``${prefix}`` in ``<export>`` values, ``str``.
         """
         # initialize all slots ending with "s" with lists
         # all other with plain values
         for attr in self.__slots__:
-            if attr.endswith('s'):
-                value = list(kwargs[attr]) if attr in kwargs else []
-                setattr(self, attr, value)
-            else:
-                value = kwargs[attr] if attr in kwargs else None
-                setattr(self, attr, value)
+            value = kwargs[attr] if attr in kwargs else None
+            setattr(self, attr, value)
         self.filename = filename
         # verify that no unknown keywords are passed
         unknown = set(kwargs.keys()).difference(self.__slots__)
@@ -78,11 +75,9 @@ class Package:
         :rtype: str
         :raises: :exc:`InvalidPackage`
         """
-        build_type_exports = [ex.content for ex in self.exports if ex.tagname == 'build_type']
-        if not build_type_exports:
-            return '<not-specified>'
+        build_type_exports = self.export.findall('build_type')
         if len(build_type_exports) == 1:
-            return build_type_exports[0]
+            return build_type_exports[0].text
         raise InvalidPackage('Only one <build_type> element is permitted.')
 
     def validate(self):
@@ -111,11 +106,11 @@ class Package:
             errors.append("Package name '%s' does not follow naming "
                           'conventions' % self.name)
 
-        if not self.version:
-            errors.append('Package version must not be empty')
-        elif not re.match('^[0-9]+\.[0-9_]+\.[0-9_]+$', self.version):
-            errors.append("Package version '%s' does not follow version "
-                          'conventions' % self.version)
+        if self.version:
+            # errors.append('Package version must not be empty')
+            if not re.match('^[0-9]+\.[0-9_]+\.[0-9_]+$', self.version):
+                errors.append("Package version '%s' does not follow version "
+                              'conventions' % self.version)
 
         # if not self.description:
         #     errors.append('Package description must not be empty')
