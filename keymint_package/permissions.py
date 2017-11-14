@@ -14,50 +14,15 @@
 
 import xml.etree.ElementTree as ElementTree
 
-from pprint import pprint
-from xml.dom import minidom
-from attrdict import AttrDict
-from collections import OrderedDict
 from copy import deepcopy
 
-import xmlschema
+# import xmlschema
 
-from .templates import get_dds_template_path
-
-
-def tidy_xml(element):
-    subiter = ElementTree.ElementTree(element).getiterator()
-    for x in subiter:
-        if x.text:
-            x.text = x.text.strip()
-        if x.tail:
-            x.tail = x.tail.strip()
-    return element
+from .namespace import DDSNamespaceHelper
+# from .templates import get_dds_template_path
 
 
-def pretty_xml(element):
-    xmlstr = ElementTree.tostring(element, encoding='unicode', method='xml')
-    xmlstr = minidom.parseString(xmlstr).toprettyxml(indent='    ', newl='\n', encoding='utf-8')
-    return xmlstr.decode('utf-8')
-
-
-class NamespacesHelper:
-    """Help build namespaces into artifacts."""
-
-    def __init__(self):
-        pass
-
-
-class DDSNamespacesHelper(NamespacesHelper):
-    """Help build namespaces into artifacts."""
-
-    def __init__(self):
-        pass
-
-    def topic(self, ros_topic):
-        topic = ElementTree.Element('topic')
-        topic.text = 'rt' + ros_topic.text.replace('/', '__')
-        return topic
+from .utils import pretty_xml, tidy_xml
 
 
 class CriteriasHelpter:
@@ -73,7 +38,7 @@ class DDSCriteriasHelper(CriteriasHelpter):
     _dds_expression_list_types = ['partitions', 'data_tags']
 
     def __init__(self):
-        self.dds_namespaces_helper = DDSNamespacesHelper()
+        self.dds_namespaces_helper = DDSNamespaceHelper()
 
     def _dds_expressions(self, dds_criteria, dds_criterias):
         for dds_criteria in dds_criterias:
