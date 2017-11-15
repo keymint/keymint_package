@@ -18,6 +18,7 @@ from copy import deepcopy
 
 # import xmlschema
 
+from .exceptions import InvalidGovernaceXML
 from .namespace import DDSNamespaceHelper
 # from .templates import get_dds_template_path
 
@@ -124,3 +125,16 @@ class DDSGovernanceHelper(GovernanceHelper):
         dds_root.append(dds_governance)
         dds_root = tidy_xml(dds_root)
         return pretty_xml(dds_root)
+
+    def test(self, dds_root_str, filename):
+        governance_xsd_path = get_dds_template_path('governance.xsd')
+        governance_schema = xmlschema.XMLSchema(governance_xsd_path)
+        if not governance_schema.is_valid(dds_root_str):
+            try:
+                governance_schema.validate(dds_root_str)
+            except Exception as ex:
+                if filename is not None:
+                    msg = "The governance file '%s' contains invalid XML:\n" % filename
+                else:
+                    msg = 'The governance file contains invalid XML:\n'
+                raise InvalidGovernanceXML(msg + str(ex))
