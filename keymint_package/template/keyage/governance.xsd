@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- =================================================================== -->
-<!-- OMG DDS Security Governance XML Schema File                         -->
-<!-- http://www.omg.org/spec/DDS-SECURITY/                               -->
-<!-- =================================================================== -->
-
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
     elementFormDefault="qualified"
     attributeFormDefault="unqualified">

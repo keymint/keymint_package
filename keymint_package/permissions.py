@@ -16,11 +16,11 @@ import xml.etree.ElementTree as ElementTree
 
 from copy import deepcopy
 
-# import xmlschema
+import xmlschema
 
 from .exceptions import InvalidPermissionsXML
 from .namespace import DDSNamespaceHelper
-# from .templates import get_dds_template_path
+from .templates import get_dds_template_path
 
 
 from .utils import pretty_xml, tidy_xml
