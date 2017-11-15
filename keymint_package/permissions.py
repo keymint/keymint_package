@@ -47,9 +47,10 @@ class DDSCriteriasHelper(CriteriasHelpter):
     def topics(self, expression_list):
         topics = ElementTree.Element('topics')
         for expression in expression_list.getchildren():
+            topic = ElementTree.Element('topic')
             formater = getattr(self.dds_namespaces_helper, expression.tag)
-            expression = formater(expression)
-            topics.append(expression)
+            topic.text = formater(expression.text)
+            topics.append(topic)
         return topics
 
     def ros_publish(self, context, criteria):
@@ -118,6 +119,8 @@ class PermissionsHelper:
 class DDSPermissionsHelper(PermissionsHelper):
     """Help build permission into artifacts."""
 
+    _dds_criteria_types = ['publish', 'subscribe', 'relay']
+
     def __init__(self):
         self.dds_criterias_helper = DDSCriteriasHelper()
         # self.namespaces = {
@@ -142,15 +145,8 @@ class DDSPermissionsHelper(PermissionsHelper):
             rule.remove(domains)
 
         for criteria in rule.getchildren():
-            if criteria.tag == 'publish':
+            if criteria.tag in self._dds_criteria_types:
                 dds_rule.append(criteria)
-                continue
-            elif criteria.tag == 'subscribe':
-                dds_rule.append(criteria)
-                continue
-            elif criteria.tag == 'relay':
-                dds_rule.append(criteria)
-                continue
             else:
                 dds_criterias = self._build_criterias(context, criteria)
                 dds_rule.extend(dds_criterias)
@@ -194,5 +190,7 @@ class DDSPermissionsHelper(PermissionsHelper):
             dds_grant = self._build_grant(context, grant)
             dds_permissions.append(dds_grant)
 
-        dds_permissions = tidy_xml(dds_permissions)
-        return pretty_xml(dds_permissions)
+        dds_root = ElementTree.Element('dds')
+        dds_root.append(dds_permissions)
+        dds_root = tidy_xml(dds_root)
+        return pretty_xml(dds_root)

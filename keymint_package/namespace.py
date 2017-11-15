@@ -28,7 +28,5 @@ class DDSNamespaceHelper(NamespaceHelper):
     def __init__(self):
         pass
 
-    def topic(self, ros_topic):
-        topic = ElementTree.Element('topic')
-        topic.text = 'rt' + ros_topic.text.replace('/', '__')
-        return topic
+    def topic(self, ros_topic_str):
+        return 'rt' + ros_topic_str.replace('/', '__')

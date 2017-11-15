@@ -150,17 +150,31 @@ def parse_package_string(data, path, *, filename=None):
 
     permissions_xsd_path = get_keyage_template_path('permissions.xsd')
     permissions_schema = xmlschema.XMLSchema(permissions_xsd_path)
+    pkg.permissions = ElementTree.Element('permissions')
+    permissions = root.find('permissions')
+    if permissions is not None:
+        for permission in permissions.getchildren():
+            permission_path = os.path.join(path, permission.find('path').text)
+            with open(permission_path, 'r') as f:
+                permission_data = f.read()
+            check_schema(permissions_schema, permission_data, permission_path)
+            permission_root = ElementTree.fromstring(permission_data)
+            permission_grants = permission_root.findall('permissions/grant')
+            pkg.permissions.extend(permission_grants)
 
-    permissions = ElementTree.Element('permissions')
-    for permission in root.find('permissions').getchildren():
-        permission_path = os.path.join(path, permission.find('path').text)
-        with open(permission_path, 'r') as f:
-            permission_data = f.read()
-        check_schema(permissions_schema, permission_data, permission_path)
-        permission_root = ElementTree.fromstring(permission_data)
-        permission_grants = permission_root.findall('permissions/grant')
-        permissions.extend(permission_grants)
-    pkg.permissions = permissions
+    governance_xsd_path = get_keyage_template_path('governance.xsd')
+    governance_schema = xmlschema.XMLSchema(governance_xsd_path)
+    pkg.governance = ElementTree.Element('domain_access_rules')
+    governances = root.find('governances')
+    if governances is not None:
+        for governance in governances.getchildren():
+            governance_path = os.path.join(path, governance.find('path').text)
+            with open(governance_path, 'r') as f:
+                governance_data = f.read()
+            check_schema(governance_schema, governance_data, governance_path)
+            governance_root = ElementTree.fromstring(governance_data)
+            governance_domain_rules = governance_root.findall('domain_access_rules/domain_rule')
+            pkg.governance.extend(governance_domain_rules)
 
     # version
     # version_node = _get_node(root, 'version')
