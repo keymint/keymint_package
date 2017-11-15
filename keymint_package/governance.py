@@ -81,14 +81,6 @@ class DDSGovernanceHelper(GovernanceHelper):
 
     def __init__(self):
         self.dds_access_rule_helper = DDSAccessRuleHelper()
-        # self.namespaces = {
-        #     'xmlns:xsi':
-        #         'http://www.w3.org/2001/XMLSchema-instance',
-        #     'xsi:noNamespaceSchemaLocation':
-        #         'http://www.omg.org/spec/DDS-Security/20160303/omg_shared_ca_permissions.xsd',
-        # }
-        # governance_xsd_path = get_dds_template_path('governance.xsd')
-        # self.governance_schema = xmlschema.XMLSchema(governance_xsd_path)
 
     def _build_access_rules(self, context, access_rule):
         formater = getattr(self.dds_access_rule_helper, access_rule.tag)
