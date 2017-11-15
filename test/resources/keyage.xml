@@ -11,6 +11,14 @@
           <path>permissions2.xml</path>
         </permission>
     </permissions>
+    <governances format="keymint_ros2_dds">
+        <governance>
+          <path>governance1.xml</path>
+        </governance>
+        <governance>
+          <path>governance2.xml</path>
+        </governance>
+    </governances>
     <export>
         <build_type>keymint_ros2_dds</build_type>
     </export>
