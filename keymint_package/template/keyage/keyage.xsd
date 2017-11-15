@@ -12,6 +12,7 @@
             <xs:element name="description" type="DescriptionType" minOccurs="0"/>
             <xs:element name="permissions" type="Permissions" minOccurs="0"/>
             <xs:element name="governances" type="Governances" minOccurs="0"/>
+            <xs:element name="identities" type="Identities" minOccurs="0"/>
             <xs:element name="export" type="ExportType" minOccurs="0"/>
         </xs:sequence>
         <xs:attribute name="format" fixed="1" use="required"/>
@@ -82,6 +83,19 @@
     </xs:complexType>
 
     <xs:complexType name="Governance">
+        <xs:sequence minOccurs="1" maxOccurs="1">
+            <xs:element name="path" type="PathType" minOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Identities">
+        <xs:sequence minOccurs="1" maxOccurs="1">
+            <xs:element name="identity" type="Identity" />
+        </xs:sequence>
+        <xs:attribute name="format" fixed="keymint_ros2_dds" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="Identity">
         <xs:sequence minOccurs="1" maxOccurs="1">
             <xs:element name="path" type="PathType" minOccurs="1"/>
         </xs:sequence>

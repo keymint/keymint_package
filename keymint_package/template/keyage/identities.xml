@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified"
+    attributeFormDefault="unqualified">
+
+    <xs:element name="keyage" type="IdentitiesNode" />
+    <xs:complexType name="IdentitiesNode">
+        <xs:sequence minOccurs="1" maxOccurs="1">
+            <xs:element name="identities" type="Identities" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Identities">
+        <xs:sequence minOccurs="1" maxOccurs="1">
+            <xs:element name="identity" type="Identity" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Identity">
+        <xs:sequence minOccurs="1" maxOccurs="1">
+            <xs:element name="cert" minOccurs="1" type="CertType" />
+            <xs:element name="key" minOccurs="1" type="KeyType" />
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" use="required" />
+    </xs:complexType>
+
+    <xs:complexType name="KeyType">
+        <xs:sequence minOccurs="1" maxOccurs="1">
+            <xs:element name="key_type" type="KeyKind" />
+            <xs:element name="key_size" type="xs:integer" />
+            <xs:element name="encryption_algorithm" type="EncryptionAlgorithmKind" />
+            <xs:element name="password_env" type="xs:string" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="KeyKind">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="rsa" />
+            <xs:enumeration value="dsa" />
+            <xs:enumeration value="ec" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="EncryptionAlgorithmKind">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="BestAvailableEncryption" />
+            <xs:enumeration value="NoEncryption" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="CertType">
+        <xs:sequence minOccurs="1" maxOccurs="1">
+            <xs:element name="subject_name" minOccurs="1" type="xs:string" />
+            <xs:element name="validity" minOccurs="1" type="Validity" />
+            <xs:element name="serial_number" type="xs:integer" />
+            <xs:element name="issuer_name" minOccurs="1" type="xs:string" />
+            <xs:element name="fingerprint_algorithm" minOccurs="1" type="FingerprintAlgorithmKind" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="FingerprintAlgorithmKind">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="SHA224" />
+            <xs:enumeration value="SHA256" />
+            <xs:enumeration value="SHA384" />
+            <xs:enumeration value="SHA512" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="Validity">
+        <xs:sequence minOccurs="1" maxOccurs="1">
+            <xs:element name="not_before" type="xs:dateTime" />
+            <xs:element name="not_after" type="xs:dateTime" />
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>
