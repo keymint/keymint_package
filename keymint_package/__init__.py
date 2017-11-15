@@ -148,11 +148,12 @@ def parse_package_string(data, path, *, filename=None):
     # name
     pkg.name = root.find('name').text
 
-    permissions_xsd_path = get_keyage_template_path('permissions.xsd')
-    permissions_schema = xmlschema.XMLSchema(permissions_xsd_path)
-    pkg.permissions = ElementTree.Element('permissions')
+
     permissions = root.find('permissions')
     if permissions is not None:
+        permissions_xsd_path = get_keyage_template_path('permissions.xsd')
+        permissions_schema = xmlschema.XMLSchema(permissions_xsd_path)
+        pkg.permissions = ElementTree.Element('permissions')
         for permission in permissions.getchildren():
             permission_path = os.path.join(path, permission.find('path').text)
             with open(permission_path, 'r') as f:
@@ -162,11 +163,11 @@ def parse_package_string(data, path, *, filename=None):
             permission_grants = permission_root.findall('permissions/grant')
             pkg.permissions.extend(permission_grants)
 
-    governance_xsd_path = get_keyage_template_path('governance.xsd')
-    governance_schema = xmlschema.XMLSchema(governance_xsd_path)
-    pkg.governance = ElementTree.Element('domain_access_rules')
     governances = root.find('governances')
     if governances is not None:
+        governance_xsd_path = get_keyage_template_path('governance.xsd')
+        governance_schema = xmlschema.XMLSchema(governance_xsd_path)
+        pkg.governance = ElementTree.Element('domain_access_rules')
         for governance in governances.getchildren():
             governance_path = os.path.join(path, governance.find('path').text)
             with open(governance_path, 'r') as f:
@@ -175,6 +176,20 @@ def parse_package_string(data, path, *, filename=None):
             governance_root = ElementTree.fromstring(governance_data)
             governance_domain_rules = governance_root.findall('domain_access_rules/domain_rule')
             pkg.governance.extend(governance_domain_rules)
+
+    identities = root.find('identities')
+    if identities is not None:
+        identities_xsd_path = get_keyage_template_path('identities.xsd')
+        identities_schema = xmlschema.XMLSchema(identities_xsd_path)
+        pkg.identities = ElementTree.Element('identities')
+        for identity in identities.getchildren():
+            identity_path = os.path.join(path, identity.find('path').text)
+            with open(identity_path, 'r') as f:
+                identity_data = f.read()
+            check_schema(identities_schema, identity_data, identity_path)
+            identity_root = ElementTree.fromstring(identity_data)
+            identity_elemts = identity_root.findall('identities/identity')
+            pkg.identities.extend(identity_elemts)
 
     # version
     # version_node = _get_node(root, 'version')
