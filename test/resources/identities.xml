@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<keyage>
+    <identities>
+        <identity name="foo/bar">
+            <cert>
+                <subject_name>C=US, ST=CA, O=Acme, CN=dtlsexample/emailAddress=acme@acme.acme</subject_name>
+                <validity>
+                    <not_before>2013-06-01T13:00:00</not_before>
+                    <not_after>2023-06-01T13:00:00</not_after>
+                </validity>
+                <serial_number>42</serial_number>
+                <issuer_name>identity_ca</issuer_name>
+                <hash_algorithm>SHA256</hash_algorithm>
+            </cert>
+            <key>
+                <asymmetric_type>
+                    <rsa>
+                        <key_size>2048</key_size>
+                    </rsa>
+                </asymmetric_type>
+                <encryption_algorithm>NoEncryption</encryption_algorithm>
+                <password_env></password_env>
+            </key>
+        </identity>
+    </identities>
+</keyage>

@@ -148,7 +148,6 @@ def parse_package_string(data, path, *, filename=None):
     # name
     pkg.name = root.find('name').text
 
-
     permissions = root.find('permissions')
     if permissions is not None:
         permissions_xsd_path = get_keyage_template_path('permissions.xsd')

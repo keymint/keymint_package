@@ -19,6 +19,11 @@
           <path>governance2.xml</path>
         </governance>
     </governances>
+    <identities format="keymint_ros2_dds">
+        <identity>
+          <path>identities.xml</path>
+        </identity>
+    </identities>
     <export>
         <build_type>keymint_ros2_dds</build_type>
     </export>
