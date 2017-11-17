@@ -4,6 +4,7 @@
     format="1">
     <name>foo/bar</name>
     <permissions format="keymint_ros2_dds">
+        <issuer_name>permissions_ca</issuer_name>
         <permission>
           <path>permissions1.xml</path>
         </permission>
@@ -12,6 +13,7 @@
         </permission>
     </permissions>
     <governances format="keymint_ros2_dds">
+        <issuer_name>permissions_ca</issuer_name>
         <governance>
           <path>governance1.xml</path>
         </governance>

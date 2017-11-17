@@ -64,6 +64,7 @@
 
     <xs:complexType name="Permissions">
         <xs:sequence minOccurs="1" maxOccurs="unbounded">
+            <xs:element name="issuer_name" type="xs:string" maxOccurs="1"/>
             <xs:element name="permission" type="Permission" />
         </xs:sequence>
         <xs:attribute name="format" fixed="keymint_ros2_dds" use="required"/>
@@ -77,6 +78,7 @@
 
     <xs:complexType name="Governances">
         <xs:sequence minOccurs="1" maxOccurs="unbounded">
+            <xs:element name="issuer_name" type="xs:string" maxOccurs="1"/>
             <xs:element name="governance" type="Governance" />
         </xs:sequence>
         <xs:attribute name="format" fixed="keymint_ros2_dds" use="required"/>

@@ -150,7 +150,7 @@ def parse_package_string(data, path, *, filename=None):
         permissions_xsd_path = get_keyage_schema_path('permissions.xsd')
         permissions_schema = xmlschema.XMLSchema(permissions_xsd_path)
         pkg.permissions = ElementTree.Element('permissions')
-        for permission in permissions.getchildren():
+        for permission in permissions.findall('permission'):
             permission_path = os.path.join(path, permission.find('path').text)
             with open(permission_path, 'r') as f:
                 permission_data = f.read()
@@ -158,13 +158,14 @@ def parse_package_string(data, path, *, filename=None):
             permission_root = ElementTree.fromstring(permission_data)
             permission_grants = permission_root.findall('permissions/grant')
             pkg.permissions.extend(permission_grants)
+        pkg.permissions_ca = permissions.find('issuer_name')
 
     governances = root.find('governances')
     if governances is not None:
         governance_xsd_path = get_keyage_schema_path('governance.xsd')
         governance_schema = xmlschema.XMLSchema(governance_xsd_path)
         pkg.governance = ElementTree.Element('domain_access_rules')
-        for governance in governances.getchildren():
+        for governance in governances.findall('governance'):
             governance_path = os.path.join(path, governance.find('path').text)
             with open(governance_path, 'r') as f:
                 governance_data = f.read()
@@ -172,13 +173,14 @@ def parse_package_string(data, path, *, filename=None):
             governance_root = ElementTree.fromstring(governance_data)
             governance_domain_rules = governance_root.findall('domain_access_rules/domain_rule')
             pkg.governance.extend(governance_domain_rules)
+        pkg.governance_ca = governances.find('issuer_name')
 
     identities = root.find('identities')
     if identities is not None:
         identities_xsd_path = get_keyage_schema_path('identities.xsd')
         identities_schema = xmlschema.XMLSchema(identities_xsd_path)
         pkg.identities = ElementTree.Element('identities')
-        for identity in identities.getchildren():
+        for identity in identities.findall('identity'):
             identity_path = os.path.join(path, identity.find('path').text)
             with open(identity_path, 'r') as f:
                 identity_data = f.read()
