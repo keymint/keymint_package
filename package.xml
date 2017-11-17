@@ -7,9 +7,9 @@
   <maintainer email="ruffin@osrfoundation.org">Ruffin White</maintainer>
   <license>Apache License 2.0</license>
 
-  <depend>python3-attrdict</depend>
-  <depend>python3-setuptools</depend>
-  <depend>python3-xmlschema</depend>
+  <build_depend>python3-setuptools</build_depend>
+
+  <exec_depend>python3-xmlschema</exec_depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>

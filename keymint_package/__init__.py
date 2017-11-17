@@ -104,9 +104,6 @@ def parse_package_string(data, path, *, filename=None):
     :returns: return parsed :class:`Package`
     :raises: :exc:`InvalidPackage`
     """
-    from attrdict import AttrDict
-    from collections import OrderedDict
-    from copy import deepcopy
     import xmlschema
     import xml.etree.ElementTree as ElementTree
 
