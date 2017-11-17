@@ -114,9 +114,9 @@ def parse_package_string(data, path, *, filename=None):
     from .package import Package
     # from .person import Person
     # from .url import Url
-    from .templates import get_keyage_template_path
+    from .schemas import get_keyage_schema_path
 
-    keyage_xsd_path = get_keyage_template_path('keyage.xsd')
+    keyage_xsd_path = get_keyage_schema_path('keyage.xsd')
     keyage_schema = xmlschema.XMLSchema(keyage_xsd_path)
 
     check_schema(keyage_schema, data, filename)
@@ -150,7 +150,7 @@ def parse_package_string(data, path, *, filename=None):
 
     permissions = root.find('permissions')
     if permissions is not None:
-        permissions_xsd_path = get_keyage_template_path('permissions.xsd')
+        permissions_xsd_path = get_keyage_schema_path('permissions.xsd')
         permissions_schema = xmlschema.XMLSchema(permissions_xsd_path)
         pkg.permissions = ElementTree.Element('permissions')
         for permission in permissions.getchildren():
@@ -164,7 +164,7 @@ def parse_package_string(data, path, *, filename=None):
 
     governances = root.find('governances')
     if governances is not None:
-        governance_xsd_path = get_keyage_template_path('governance.xsd')
+        governance_xsd_path = get_keyage_schema_path('governance.xsd')
         governance_schema = xmlschema.XMLSchema(governance_xsd_path)
         pkg.governance = ElementTree.Element('domain_access_rules')
         for governance in governances.getchildren():
@@ -178,7 +178,7 @@ def parse_package_string(data, path, *, filename=None):
 
     identities = root.find('identities')
     if identities is not None:
-        identities_xsd_path = get_keyage_template_path('identities.xsd')
+        identities_xsd_path = get_keyage_schema_path('identities.xsd')
         identities_schema = xmlschema.XMLSchema(identities_xsd_path)
         pkg.identities = ElementTree.Element('identities')
         for identity in identities.getchildren():

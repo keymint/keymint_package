@@ -12,21 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import xml.etree.ElementTree as ElementTree
+import os
+
+import pkg_resources
 
 
-class NamespaceHelper:
-    """Help build namespaces into artifacts."""
-
-    def __init__(self):
-        pass
-
-
-class DDSNamespaceHelper(NamespaceHelper):
-    """Help build namespaces into artifacts."""
-
-    def __init__(self):
-        pass
-
-    def topic(self, ros_topic_str):
-        return 'rt' + ros_topic_str.replace('/', '__')
+def get_keyage_schema_path(name):
+    return pkg_resources.resource_filename(
+        package_or_requirement='keymint_package',
+        resource_name=os.path.join('schema', 'keyage', name))
