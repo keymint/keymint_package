@@ -15,9 +15,3 @@
 
 class InvalidPackage(Exception):
     pass
-
-class InvalidPermissionsXML(Exception):
-    pass
-
-class InvalidGovernanceXML(Exception):
-    pass
