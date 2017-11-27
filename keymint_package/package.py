@@ -35,7 +35,6 @@ class Package:
         'governance_ca',
         'identities',
         'string',
-        'dict',
         'tree',
         'export',
         'filename',
@@ -48,8 +47,7 @@ class Package:
         :param filename: location of keyage.xml.  Necessary if
         converting ``${prefix}`` in ``<export>`` values, ``str``.
         """
-        # initialize all slots ending with "s" with lists
-        # all other with plain values
+        # initialize all slots with values
         for attr in self.__slots__:
             value = kwargs[attr] if attr in kwargs else None
             setattr(self, attr, value)
@@ -109,13 +107,9 @@ class Package:
                           'conventions' % self.name)
 
         if self.version:
-            # errors.append('Package version must not be empty')
             if not re.match('^[0-9]+\.[0-9_]+\.[0-9_]+$', self.version):
                 errors.append("Package version '%s' does not follow version "
                               'conventions' % self.version)
-
-        # if not self.description:
-        #     errors.append('Package description must not be empty')
 
         if self.maintainers is not None:
             # if not self.maintainers:
@@ -127,10 +121,6 @@ class Package:
                     errors.append(str(e))
                 if not maintainer.email:
                     errors.append('Maintainers must have an email address')
-
-        # if not self.licenses:
-        #     errors.append('The package node must contain at least one '
-        #                   "'license' tag")
 
         if self.authors is not None:
             for author in self.authors:
