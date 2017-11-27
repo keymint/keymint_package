@@ -190,38 +190,10 @@ def parse_package_string(data, path, *, filename=None):
             pkg.identities.extend(identity_elemts)
 
     # version
-    # version_node = _get_node(root, 'version')
-    # pkg.version = _get_node_value(version_node)
+    pkg.version = root.findtext('version')
 
     # description
-    # pkg.description = _get_node_value(
-    #     _get_node(root, 'description'), allow_xml=True, apply_str=False)
-
-    # at least one maintainer, all must have email
-    # maintainers = _get_nodes(root, 'maintainer')
-    # for node in maintainers:
-    #     pkg.maintainers.append(Person(
-    #         _get_node_value(node, apply_str=False),
-    #         email=_get_node_attr(node, 'email')))
-
-    # urls with optional type
-    # urls = _get_nodes(root, 'url')
-    # for node in urls:
-    #     pkg.urls.append(Url(
-    #         _get_node_value(node),
-    #         url_type=_get_node_attr(node, 'type', default='website')))
-
-    # authors with optional email
-    # authors = _get_nodes(root, 'author')
-    # for node in authors:
-    #     pkg.authors.append(Person(
-    #         _get_node_value(node, apply_str=False),
-    #         email=_get_node_attr(node, 'email', default=None)))
-
-    # at least one license
-    # licenses = _get_nodes(root, 'license')
-    # for node in licenses:
-    #     pkg.licenses.append(_get_node_value(node))
+    pkg.description = root.findtext('description')
 
     pkg.validate()
 
