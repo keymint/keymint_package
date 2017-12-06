@@ -26,7 +26,7 @@ and provides tooling to build these federated keystores together.""",
     test_suite='test',
     package_data={
         'keymint_package': [
-            'schema/keyage/*',
+            'schema/package/*',
         ],
     },
 )

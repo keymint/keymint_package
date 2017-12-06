@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Library for parsing keyage.xml and providing an object representation."""
+"""Library for parsing keymint_package.xml and providing an object representation."""
 
 # set version number
 try:
@@ -28,14 +28,14 @@ except ImportError:
 
 import os
 
-PACKAGE_MANIFEST_FILENAME = 'keyage.xml'
+PACKAGE_MANIFEST_FILENAME = 'keymint_package.xml'
 
 
 def parse_package(path):
     """
     Parse package manifest.
 
-    :param path: The path of the keyage.xml file, it may or may not
+    :param path: The path of the keymint_package.xml file, it may or may not
     include the filename
 
     :returns: return :class:`Package` instance, populated with parsed fields
@@ -97,9 +97,9 @@ def check_schema(schema, data, filename=None):
 
 def parse_package_string(data, path, *, filename=None):
     """
-    Parse keyage.xml string contents.
+    Parse keymint_package.xml string contents.
 
-    :param data: keyage.xml contents, ``str``
+    :param data: keymint_package.xml contents, ``str``
     :param filename: full file path for debugging, ``str``
     :returns: return parsed :class:`Package`
     :raises: :exc:`InvalidPackage`
@@ -111,20 +111,20 @@ def parse_package_string(data, path, *, filename=None):
     from .package import Package
     # from .person import Person
     # from .url import Url
-    from .schemas import get_keyage_schema_path
+    from .schemas import get_keymint_package_schema_path
 
-    keyage_xsd_path = get_keyage_schema_path('keyage.xsd')
-    keyage_schema = xmlschema.XMLSchema(keyage_xsd_path)
+    keymint_package_xsd_path = get_keymint_package_schema_path('keymint_package.xsd')
+    keymint_package_schema = xmlschema.XMLSchema(keymint_package_xsd_path)
 
-    check_schema(keyage_schema, data, filename)
-    keyage_tree = ElementTree.ElementTree(ElementTree.fromstring(data))
+    check_schema(keymint_package_schema, data, filename)
+    keymint_package_tree = ElementTree.ElementTree(ElementTree.fromstring(data))
 
     pkg = Package(filename=filename)
     pkg.string = data
-    # pkg.dict = keyage_dict
-    pkg.tree = keyage_tree
+    # pkg.dict = keymint_package_dict
+    pkg.tree = keymint_package_tree
 
-    root = keyage_tree.getroot()
+    root = keymint_package_tree.getroot()
     pkg.export = root.find('export')
 
     # format attribute
@@ -147,7 +147,7 @@ def parse_package_string(data, path, *, filename=None):
 
     permissions = root.find('permissions')
     if permissions is not None:
-        permissions_xsd_path = get_keyage_schema_path('permissions.xsd')
+        permissions_xsd_path = get_keymint_package_schema_path('permissions.xsd')
         permissions_schema = xmlschema.XMLSchema(permissions_xsd_path)
         pkg.permissions = ElementTree.Element('permissions')
         for permission in permissions.findall('permission'):
@@ -162,7 +162,7 @@ def parse_package_string(data, path, *, filename=None):
 
     governances = root.find('governances')
     if governances is not None:
-        governance_xsd_path = get_keyage_schema_path('governance.xsd')
+        governance_xsd_path = get_keymint_package_schema_path('governance.xsd')
         governance_schema = xmlschema.XMLSchema(governance_xsd_path)
         pkg.governance = ElementTree.Element('domain_access_rules')
         for governance in governances.findall('governance'):
@@ -177,7 +177,7 @@ def parse_package_string(data, path, *, filename=None):
 
     identities = root.find('identities')
     if identities is not None:
-        identities_xsd_path = get_keyage_schema_path('identities.xsd')
+        identities_xsd_path = get_keymint_package_schema_path('identities.xsd')
         identities_schema = xmlschema.XMLSchema(identities_xsd_path)
         pkg.identities = ElementTree.Element('identities')
         for identity in identities.findall('identity'):

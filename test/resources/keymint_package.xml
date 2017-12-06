@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<keyage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="http://example.com/ns/collection/keyage.xsd"
+<package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://example.com/ns/collection/keymint_package.xsd"
     format="1">
     <name>foo/bar</name>
     <permissions format="keymint_ros2_dds">
@@ -29,4 +29,4 @@
     <export>
         <build_type>keymint_ros2_dds</build_type>
     </export>
-</keyage>
+</package>

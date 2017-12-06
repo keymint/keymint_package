@@ -4,8 +4,8 @@
     elementFormDefault="qualified"
     attributeFormDefault="unqualified">
 
-    <xs:element name="keyage" type="Keyage" />
-    <xs:complexType name="Keyage">
+    <xs:element name="package" type="PackageType" />
+    <xs:complexType name="PackageType">
         <xs:sequence minOccurs="1" maxOccurs="1">
             <xs:element name="name" type="NameType" minOccurs="1"/>
             <xs:element name="version" type="VersionType" minOccurs="0"/>

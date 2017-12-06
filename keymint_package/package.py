@@ -44,7 +44,7 @@ class Package:
         """
         Constructor.
 
-        :param filename: location of keyage.xml.  Necessary if
+        :param filename: location of keymint_package.xml.  Necessary if
         converting ``${prefix}`` in ``<export>`` values, ``str``.
         """
         # initialize all slots with values

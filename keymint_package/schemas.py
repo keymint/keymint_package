@@ -17,7 +17,7 @@ import os
 import pkg_resources
 
 
-def get_keyage_schema_path(name):
+def get_keymint_package_schema_path(name):
     return pkg_resources.resource_filename(
         package_or_requirement='keymint_package',
-        resource_name=os.path.join('schema', 'keyage', name))
+        resource_name=os.path.join('schema', 'package', name))

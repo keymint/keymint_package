@@ -4,7 +4,7 @@
     elementFormDefault="qualified"
     attributeFormDefault="unqualified">
 
-    <xs:element name="keyage" type="PermissionsNode" />
+    <xs:element name="package" type="PermissionsNode" />
     <xs:complexType name="PermissionsNode">
         <xs:sequence minOccurs="1" maxOccurs="1">
             <xs:element name="permissions" type="Permissions" />

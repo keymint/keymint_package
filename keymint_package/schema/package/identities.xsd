@@ -4,7 +4,7 @@
     elementFormDefault="qualified"
     attributeFormDefault="unqualified">
 
-    <xs:element name="keyage" type="IdentitiesNode" />
+    <xs:element name="package" type="IdentitiesNode" />
     <xs:complexType name="IdentitiesNode">
         <xs:sequence minOccurs="1" maxOccurs="1">
             <xs:element name="identities" type="Identities" />
