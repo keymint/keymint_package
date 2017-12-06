@@ -19,8 +19,8 @@
 
     <xs:complexType name="Grant">
         <xs:sequence minOccurs="1" maxOccurs="1">
-            <xs:element name="subject_name" minOccurs="0" type="xs:string" />
-            <xs:element name="validity" minOccurs="0" type="Validity" />
+            <xs:element name="subject_name" type="xs:string" />
+            <xs:element name="validity" type="Validity" />
             <xs:sequence minOccurs="1" maxOccurs="unbounded">
                 <xs:choice minOccurs="1" maxOccurs="1">
                     <xs:element name="allow_rule" minOccurs="0" type="Rule" />
@@ -42,7 +42,7 @@
     <xs:complexType name="Rule">
         <xs:sequence minOccurs="1" maxOccurs="1">
             <!-- DDSSEC-75 -->
-            <xs:element name="domains" minOccurs="0" type="DomainIdSet" />
+            <xs:element name="domains" type="DomainIdSet" />
             <xs:sequence minOccurs="0" maxOccurs="unbounded"> <!-- DDSSEC-134 -->
                 <xs:element name="publish" type="Criteria" />
             </xs:sequence>
