@@ -72,7 +72,8 @@
 
     <xs:complexType name="Permission">
         <xs:sequence minOccurs="1" maxOccurs="1">
-            <xs:element name="path" type="PathType" minOccurs="1"/>
+            <xs:element name="permission_path" type="PathType" minOccurs="1"/>
+            <xs:element name="defaults_path" type="PathType" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -86,7 +87,8 @@
 
     <xs:complexType name="Governance">
         <xs:sequence minOccurs="1" maxOccurs="1">
-            <xs:element name="path" type="PathType" minOccurs="1"/>
+            <xs:element name="governance_path" type="PathType" minOccurs="1"/>
+            <xs:element name="defaults_path" type="PathType" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -99,7 +101,8 @@
 
     <xs:complexType name="Identity">
         <xs:sequence minOccurs="1" maxOccurs="1">
-            <xs:element name="path" type="PathType" minOccurs="1"/>
+            <xs:element name="identity_path" type="PathType" minOccurs="1"/>
+            <xs:element name="defaults_path" type="PathType" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 

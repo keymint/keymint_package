@@ -28,6 +28,8 @@ except ImportError:
 
 import os
 
+from keymint_package.xml.defaults import set_defaults
+
 PACKAGE_MANIFEST_FILENAME = 'keymint_package.xml'
 
 
@@ -107,13 +109,10 @@ def parse_package_string(data, path, *, filename=None):
     import xmlschema
     import xml.etree.ElementTree as ElementTree
 
-    # from .export import Export
     from .package import Package
-    # from .person import Person
-    # from .url import Url
-    from .schemas import get_keymint_package_schema_path
+    from .schemas import get_package_schema_path
 
-    keymint_package_xsd_path = get_keymint_package_schema_path('keymint_package.xsd')
+    keymint_package_xsd_path = get_package_schema_path('keymint_package.xsd')
     keymint_package_schema = xmlschema.XMLSchema(keymint_package_xsd_path)
 
     check_schema(keymint_package_schema, data, filename)
@@ -147,45 +146,57 @@ def parse_package_string(data, path, *, filename=None):
 
     permissions = root.find('permissions')
     if permissions is not None:
-        permissions_xsd_path = get_keymint_package_schema_path('permissions.xsd')
+        permissions_xsd_path = get_package_schema_path('permissions.xsd')
         permissions_schema = xmlschema.XMLSchema(permissions_xsd_path)
         pkg.permissions = ElementTree.Element('permissions')
         for permission in permissions.findall('permission'):
-            permission_path = os.path.join(path, permission.find('path').text)
-            with open(permission_path, 'r') as f:
-                permission_data = f.read()
-            check_schema(permissions_schema, permission_data, permission_path)
-            permission_root = ElementTree.fromstring(permission_data)
-            permission_grants = permission_root.findall('permissions/grant')
-            pkg.permissions.extend(permission_grants)
+            permission_path = os.path.join(path, permission.find('permission_path').text)
+            permission_root = ElementTree.ElementTree(file=permission_path).getroot()
+            if permission.find('defaults_path') is not None:
+                defaults_path = os.path.join(
+                    path, permission.find('defaults_path').text)
+                defaults_root = ElementTree.ElementTree(file=defaults_path).getroot()
+                permission_root = set_defaults(
+                    permissions_schema, permission_root, defaults_root)
+            check_schema(permissions_schema, permission_root, permission_path)
+            permission_elemts = permission_root.findall('permissions/grant')
+            pkg.permissions.extend(permission_elemts)
         pkg.permissions_ca = permissions.find('issuer_name')
 
     governances = root.find('governances')
     if governances is not None:
-        governance_xsd_path = get_keymint_package_schema_path('governance.xsd')
-        governance_schema = xmlschema.XMLSchema(governance_xsd_path)
+        governances_xsd_path = get_package_schema_path('governance.xsd')
+        governances_schema = xmlschema.XMLSchema(governances_xsd_path)
         pkg.governance = ElementTree.Element('domain_access_rules')
         for governance in governances.findall('governance'):
-            governance_path = os.path.join(path, governance.find('path').text)
-            with open(governance_path, 'r') as f:
-                governance_data = f.read()
-            check_schema(governance_schema, governance_data, governance_path)
-            governance_root = ElementTree.fromstring(governance_data)
-            governance_domain_rules = governance_root.findall('domain_access_rules/domain_rule')
-            pkg.governance.extend(governance_domain_rules)
+            governance_path = os.path.join(path, governance.find('governance_path').text)
+            governance_root = ElementTree.ElementTree(file=governance_path).getroot()
+            if governance.find('defaults_path') is not None:
+                defaults_path = os.path.join(
+                    path, governance.find('defaults_path').text)
+                defaults_root = ElementTree.ElementTree(file=defaults_path).getroot()
+                governance_root = set_defaults(
+                    governances_schema, governance_root, defaults_root)
+            check_schema(governances_schema, governance_root, governance_path)
+            governance_elemts = governance_root.findall('domain_access_rules/domain_rule')
+            pkg.governance.extend(governance_elemts)
         pkg.governance_ca = governances.find('issuer_name')
 
     identities = root.find('identities')
     if identities is not None:
-        identities_xsd_path = get_keymint_package_schema_path('identities.xsd')
+        identities_xsd_path = get_package_schema_path('identities.xsd')
         identities_schema = xmlschema.XMLSchema(identities_xsd_path)
         pkg.identities = ElementTree.Element('identities')
         for identity in identities.findall('identity'):
-            identity_path = os.path.join(path, identity.find('path').text)
-            with open(identity_path, 'r') as f:
-                identity_data = f.read()
-            check_schema(identities_schema, identity_data, identity_path)
-            identity_root = ElementTree.fromstring(identity_data)
+            identity_path = os.path.join(path, identity.find('identity_path').text)
+            identity_root = ElementTree.ElementTree(file=identity_path).getroot()
+            if identity.find('defaults_path') is not None:
+                defaults_path = os.path.join(
+                    path, identity.find('defaults_path').text)
+                defaults_root = ElementTree.ElementTree(file=defaults_path).getroot()
+                identity_root = set_defaults(
+                    identities_schema, identity_root, defaults_root)
+            check_schema(identities_schema, identity_root, identity_path)
             identity_elemts = identity_root.findall('identities/identity')
             pkg.identities.extend(identity_elemts)
 
