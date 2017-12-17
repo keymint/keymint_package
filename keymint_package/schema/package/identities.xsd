@@ -19,19 +19,19 @@
 
     <xs:complexType name="Identity">
         <xs:sequence minOccurs="1" maxOccurs="1">
-            <xs:element name="cert" minOccurs="1" type="CertType" />
-            <xs:element name="key" minOccurs="1" type="KeyType" />
+            <xs:element name="cert" type="CertType" />
+            <xs:element name="key" type="KeyType" />
         </xs:sequence>
         <xs:attribute name="name" type="xs:string" use="required" />
     </xs:complexType>
 
     <xs:complexType name="CertType">
         <xs:sequence minOccurs="1" maxOccurs="1">
-            <xs:element name="subject_name" minOccurs="1" type="xs:string" />
-            <xs:element name="validity" minOccurs="1" type="Validity" />
+            <xs:element name="subject_name" type="xs:string" />
+            <xs:element name="validity" type="Validity" />
             <xs:element name="serial_number" type="xs:integer" nillable="true" />
-            <xs:element name="issuer_name" minOccurs="1" type="xs:string" />
-            <xs:element name="hash_algorithm" minOccurs="1" type="HashAlgorithmKind" />
+            <xs:element name="issuer_name" type="xs:string" nillable="true" />
+            <xs:element name="hash_algorithm" type="HashAlgorithmKind" />
         </xs:sequence>
     </xs:complexType>
 
@@ -55,15 +55,15 @@
         <xs:sequence minOccurs="1" maxOccurs="1">
             <xs:element name="asymmetric_type" type="AsymmetricType" />
             <xs:element name="encryption_algorithm" type="EncryptionAlgorithmKind" />
-            <xs:element name="password_env" type="xs:string" />
+            <xs:element name="password_env" type="xs:string" nillable="true" />
         </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="AsymmetricType">
         <xs:choice minOccurs="1" maxOccurs="1">
-            <xs:element name="rsa" minOccurs="0" type="BitAsymmetricType" />
-            <xs:element name="dsa" minOccurs="0" type="BitAsymmetricType" />
-            <xs:element name="ec" minOccurs="0" type="CurveAsymmetricType" />
+            <xs:element name="rsa" type="BitAsymmetricType" />
+            <xs:element name="dsa" type="BitAsymmetricType" />
+            <xs:element name="ec" type="CurveAsymmetricType" />
         </xs:choice>
     </xs:complexType>
 
