@@ -15,7 +15,7 @@
 from xml.etree import ElementTree
 
 from xmlschema import XMLSchemaValidationError
-from xmlschema.core import etree_iselement
+from xmlschema.etree import etree_iselement
 from xmlschema.resources import load_xml_resource
 
 
@@ -43,38 +43,30 @@ def default_preprocessor(xsd_schema, xml_document, xml_document_defaults,
     defaults_data = load_xml(xml_document_defaults)
 
     iter_decoder = xsd_schema.iter_decode(
-        xml_document=xml_document,
+        xml_document=data,
         path=path,
         use_defaults=use_defaults,
         validation='lax')
 
     for chunk in iter_decoder:
         if isinstance(chunk, XMLSchemaValidationError):
-            name = chunk.validator.name
-            expected_reason = "tag '{name}' expected.".format(name=name)
-            if chunk.reason == expected_reason:
-                defaults_elem = defaults_data.find(name)
-                if defaults_elem is not None:
-                    # print('Default element found!')
-                    # print('    ', 'name: ', name)
-                    # print('    ', 'chunk.elem', chunk.elem)
-                    # print('    ', 'defaults_elem: ', defaults_elem)
-                    # print('    ', 'chunk.context.expected_index: ', chunk.context.expected_index)
-                    chunk.elem.insert(chunk.context.expected_index, defaults_elem)
-                    yield chunk
-                    return
-                else:
-                    raise chunk
-                    # # could create an empty element and expect user provided default children
-                    # missing_elem = ElementTree.Element(name)
-                    # print('No default found!')
-                    # print('    ', 'name: ', name)
-                    # print('    ', 'chunk.elem', chunk.elem)
-                    # print('    ', 'missing_elem: ', missing_elem)
-                    # print('    ', 'chunk.context.expected_index: ', chunk.context.expected_index)
-                    # chunk.elem.insert(chunk.context.expected_index, missing_elem)
-                    # yield chunk
-                    # return
+            if chunk.reason.startswith("The child n.") or \
+               chunk.reason.startswith("The content of element '"):
+                expecteds = chunk.context.expected
+                if not isinstance(expecteds, (list, tuple)):
+                    expecteds = [expecteds]
+                for i, expected in enumerate(expecteds):
+                    index = chunk.context.index + i
+                    default_elem = defaults_data.find(expected)
+                    if default_elem is not None:
+                        chunk.elem.insert(index, default_elem)
+                        yield chunk
+                        return
+                    else:
+                        missing_elem = ElementTree.Element(expected)
+                        chunk.elem.insert(index, missing_elem)
+                        yield chunk
+                        return
             else:
                 raise chunk
 
