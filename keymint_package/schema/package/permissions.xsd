@@ -114,7 +114,7 @@
 
     <xs:complexType name="RosTopicCriteria">
         <xs:all minOccurs="1">
-            <xs:element name="topics" minOccurs="0" type="RosTopicExpressionList" />
+            <xs:element name="ros_topics" minOccurs="0" type="RosTopicExpressionList" />
             <xs:element name="partitions" minOccurs="0" type="PartitionExpressionList" />
             <xs:element name="data_tags" minOccurs="0" type="DataTags" />
         </xs:all>
@@ -122,7 +122,7 @@
 
     <xs:complexType name="RosServiceCriteria">
         <xs:all minOccurs="1">
-            <xs:element name="services" minOccurs="0" type="RosServiceExpressionList" />
+            <xs:element name="ros_services" minOccurs="0" type="RosServiceExpressionList" />
             <xs:element name="partitions" minOccurs="0" type="PartitionExpressionList" />
             <xs:element name="data_tags" minOccurs="0" type="DataTags" />
         </xs:all>
@@ -130,7 +130,7 @@
 
     <xs:complexType name="RosActionCriteria">
         <xs:all minOccurs="1">
-            <xs:element name="actions" minOccurs="0" type="RosActionExpressionList" />
+            <xs:element name="ros_actions" minOccurs="0" type="RosActionExpressionList" />
             <xs:element name="partitions" minOccurs="0" type="PartitionExpressionList" />
             <xs:element name="data_tags" minOccurs="0" type="DataTags" />
         </xs:all>
@@ -138,7 +138,7 @@
 
     <xs:complexType name="RosParameterCriteria">
         <xs:all minOccurs="1">
-            <xs:element name="parameters" minOccurs="0" type="RosParameterExpressionList" />
+            <xs:element name="ros_parameters" minOccurs="0" type="RosParameterExpressionList" />
             <xs:element name="partitions" minOccurs="0" type="PartitionExpressionList" />
             <xs:element name="data_tags" minOccurs="0" type="DataTags" />
         </xs:all>
@@ -160,25 +160,25 @@
 
     <xs:complexType name="RosTopicExpressionList">
         <xs:sequence minOccurs="1" maxOccurs="unbounded">
-            <xs:element name="topic" type="RosExpression" />
+            <xs:element name="ros_topic" type="RosExpression" />
         </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="RosServiceExpressionList">
         <xs:sequence minOccurs="1" maxOccurs="unbounded">
-            <xs:element name="service" type="RosExpression" />
+            <xs:element name="ros_service" type="RosExpression" />
         </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="RosActionExpressionList">
         <xs:sequence minOccurs="1" maxOccurs="unbounded">
-            <xs:element name="action" type="RosExpression" />
+            <xs:element name="ros_action" type="RosExpression" />
         </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="RosParameterExpressionList">
         <xs:sequence minOccurs="1" maxOccurs="unbounded">
-            <xs:element name="parameter" type="RosExpression" />
+            <xs:element name="ros_parameter" type="RosExpression" />
         </xs:sequence>
     </xs:complexType>
 
