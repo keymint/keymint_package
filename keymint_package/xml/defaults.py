@@ -53,20 +53,23 @@ def default_preprocessor(xsd_schema, xml_document, xml_document_defaults,
             if chunk.reason.startswith("The child n.") or \
                chunk.reason.startswith("The content of element '"):
                 expecteds = chunk.expected
-                if not isinstance(expecteds, (list, tuple)):
-                    expecteds = [expecteds]
-                for i, expected in enumerate(expecteds):
-                    index = chunk.index + i
-                    default_elem = defaults_data.find(expected)
-                    if default_elem is not None:
-                        chunk.elem.insert(index, default_elem)
-                        yield chunk
-                        return
-                    else:
-                        missing_elem = ElementTree.Element(expected)
-                        chunk.elem.insert(index, missing_elem)
-                        yield chunk
-                        return
+                if expecteds:
+                    if not isinstance(expecteds, (list, tuple)):
+                        expecteds = [expecteds]
+                    for i, expected in enumerate(expecteds):
+                        index = chunk.index + i
+                        default_elem = defaults_data.find(expected)
+                        if default_elem is not None:
+                            chunk.elem.insert(index, default_elem)
+                            yield chunk
+                            return
+                        else:
+                            missing_elem = ElementTree.Element(expected)
+                            chunk.elem.insert(index, missing_elem)
+                            yield chunk
+                            return
+                else:
+                    raise chunk
             else:
                 raise chunk
 
