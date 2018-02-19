@@ -52,11 +52,14 @@
                 <xs:sequence minOccurs="0" maxOccurs="unbounded">
                     <xs:element name="subscribe" type="Criteria" />
                 </xs:sequence>
-                 <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                <xs:sequence minOccurs="0" maxOccurs="unbounded">
                     <xs:element name="relay" type="Criteria" />
                 </xs:sequence>
                 <xs:sequence minOccurs="0" maxOccurs="unbounded">
                     <xs:element name="ros_publish" type="RosTopicCriteria" />
+                </xs:sequence>
+                <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                    <xs:element name="ros_relay" type="RosTopicCriteria" />
                 </xs:sequence>
                 <xs:sequence minOccurs="0" maxOccurs="unbounded">
                     <xs:element name="ros_subscribe" type="RosTopicCriteria" />
