@@ -1,5 +1,21 @@
+import os
+
 from setuptools import find_packages
 from setuptools import setup
+
+
+def package_files(directory):
+    paths = []
+    for (path, directories, filenames) in os.walk(directory):
+        for filename in filenames:
+            paths.append(os.path.join('..', path, filename))
+    return paths
+
+
+extra_files = []
+extra_files.extend(package_files('keymint_package/schema'))
+extra_files.extend(package_files('keymint_package/template'))
+
 
 setup(
     name='keymint_package',
@@ -25,8 +41,6 @@ and provides tooling to build these federated keystores together.""",
     license='Apache License, Version 2.0',
     test_suite='test',
     package_data={
-        'keymint_package': [
-            'schema/package/*',
-        ],
+        'keymint_package': extra_files,
     },
 )
