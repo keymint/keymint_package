@@ -15,7 +15,7 @@
 from xml.etree import ElementTree
 
 from xmlschema import XMLSchemaValidationError
-from xmlschema.etree import etree_iselement
+from xmlschema.etree import is_etree_element
 from xmlschema.resources import load_xml_resource
 
 
@@ -24,12 +24,12 @@ def load_xml(xml_document):
     try:
         xml_root = xml_document.getroot()
     except (AttributeError, TypeError):
-        if etree_iselement(xml_document):
+        if is_etree_element(xml_document):
             xml_root = xml_document
         else:
             xml_root = load_xml_resource(xml_document)
     else:
-        if not etree_iselement(xml_root):
+        if not is_etree_element(xml_root):
             raise XMLSchemaTypeError(
                 "wrong type %r for 'xml_document' argument." % type(xml_document)
             )
