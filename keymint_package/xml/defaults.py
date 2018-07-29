@@ -18,6 +18,7 @@ from xmlschema import XMLSchemaValidationError
 from xmlschema.etree import is_etree_element
 from xmlschema.resources import load_xml_resource
 
+from .utils import pretty_xml
 
 def load_xml(xml_document):
 
@@ -43,7 +44,7 @@ def default_preprocessor(xsd_schema, xml_document, xml_document_defaults,
     defaults_data = load_xml(xml_document_defaults)
 
     iter_decoder = xsd_schema.iter_decode(
-        xml_document=data,
+        source=data,
         path=path,
         use_defaults=use_defaults,
         validation='lax')
@@ -64,13 +65,35 @@ def default_preprocessor(xsd_schema, xml_document, xml_document_defaults,
                             yield chunk
                             return
                         else:
-                            missing_elem = ElementTree.Element(expected)
+                            missing_elem = chunk.elem.__class__(expected)
                             chunk.elem.insert(index, missing_elem)
                             yield chunk
                             return
                 else:
                     raise chunk
+            elif chunk.reason.startswith("invalid literal for"):
+                expected = chunk.elem.tag
+                print("expected")
+                print(expected)
+                default_elem = defaults_data.find(expected)
+                print("default_elem")
+                print(vars(default_elem))
+                # chunk.elem.attrib = default_elem.attrib
+                chunk.elem.text = "0"
+                print("chunk")
+                print(vars(chunk))
+                print("default_elem.text")
+                print(default_elem.text)
+                # yield chunk
+                # return
             else:
+                # print("chunk.reason")
+                # print(chunk.reason)
+                # print("chunk.message")
+                # print(vars(chunk))
+                # print("chunk.elem")
+                # print(pretty_xml(chunk.elem))
+                # print("##########")
                 raise chunk
 
 
