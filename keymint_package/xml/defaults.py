@@ -52,7 +52,7 @@ def default_preprocessor(xsd_schema, xml_document, xml_document_defaults,
     for chunk in iter_decoder:
         if isinstance(chunk, XMLSchemaValidationError):
             if chunk.reason.startswith("The child n.") or \
-               chunk.reason.startswith("The content of element '"):
+                chunk.reason.startswith("The content of element '"):
                 expecteds = chunk.expected
                 if expecteds:
                     if not isinstance(expecteds, (list, tuple)):
@@ -73,27 +73,20 @@ def default_preprocessor(xsd_schema, xml_document, xml_document_defaults,
                     raise chunk
             elif chunk.reason.startswith("invalid literal for"):
                 expected = chunk.elem.tag
-                print("expected")
-                print(expected)
                 default_elem = defaults_data.find(expected)
-                print("default_elem")
-                print(vars(default_elem))
-                # chunk.elem.attrib = default_elem.attrib
-                chunk.elem.text = "0"
-                print("chunk")
-                print(vars(chunk))
-                print("default_elem.text")
-                print(default_elem.text)
-                # yield chunk
-                # return
+                chunk.elem.text = default_elem.text
+                yield chunk
+                return
             else:
-                # print("chunk.reason")
-                # print(chunk.reason)
-                # print("chunk.message")
-                # print(vars(chunk))
-                # print("chunk.elem")
-                # print(pretty_xml(chunk.elem))
-                # print("##########")
+                # TODO: raise an informative error to user
+                print("##########")
+                print("chunk.reason")
+                print(chunk.reason)
+                print("chunk.message")
+                print(vars(chunk))
+                print("chunk.elem")
+                print(pretty_xml(chunk.elem))
+                print("##########")
                 raise chunk
 
 
