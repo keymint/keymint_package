@@ -12,12 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from xml.etree import ElementTree
+from xml.etree import cElementTree as ElementTree
 
 from xmlschema import XMLSchemaValidationError
 from xmlschema.etree import is_etree_element
 from xmlschema.resources import load_xml_resource
 
+from .utils import pretty_xml
 
 def load_xml(xml_document):
 
@@ -43,7 +44,7 @@ def default_preprocessor(xsd_schema, xml_document, xml_document_defaults,
     defaults_data = load_xml(xml_document_defaults)
 
     iter_decoder = xsd_schema.iter_decode(
-        xml_document=data,
+        source=data,
         path=path,
         use_defaults=use_defaults,
         validation='lax')
@@ -51,7 +52,7 @@ def default_preprocessor(xsd_schema, xml_document, xml_document_defaults,
     for chunk in iter_decoder:
         if isinstance(chunk, XMLSchemaValidationError):
             if chunk.reason.startswith("The child n.") or \
-               chunk.reason.startswith("The content of element '"):
+                chunk.reason.startswith("The content of element '"):
                 expecteds = chunk.expected
                 if expecteds:
                     if not isinstance(expecteds, (list, tuple)):
@@ -70,7 +71,22 @@ def default_preprocessor(xsd_schema, xml_document, xml_document_defaults,
                             return
                 else:
                     raise chunk
+            elif chunk.reason.startswith("invalid literal for"):
+                expected = chunk.elem.tag
+                default_elem = defaults_data.find(expected)
+                chunk.elem.text = default_elem.text
+                yield chunk
+                return
             else:
+                # TODO: raise an informative error to user
+                print("##########")
+                print("chunk.reason")
+                print(chunk.reason)
+                print("chunk.message")
+                print(vars(chunk))
+                print("chunk.elem")
+                print(pretty_xml(chunk.elem))
+                print("##########")
                 raise chunk
 
 
