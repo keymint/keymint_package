@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from xml.etree import ElementTree
+from xml.etree import cElementTree as ElementTree
 
 from xmlschema import XMLSchemaValidationError
 from xmlschema.etree import is_etree_element
@@ -65,7 +65,7 @@ def default_preprocessor(xsd_schema, xml_document, xml_document_defaults,
                             yield chunk
                             return
                         else:
-                            missing_elem = chunk.elem.__class__(expected)
+                            missing_elem = ElementTree.Element(expected)
                             chunk.elem.insert(index, missing_elem)
                             yield chunk
                             return

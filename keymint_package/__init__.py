@@ -28,6 +28,10 @@ except ImportError:
 
 import os
 
+from xml.etree import cElementTree as ElementTree
+
+import xmlschema
+
 from keymint_package.xml.defaults import set_defaults
 
 PACKAGE_MANIFEST_FILENAME = 'keymint_package.xml'
@@ -106,8 +110,6 @@ def parse_package_string(data, path, *, filename=None):
     :returns: return parsed :class:`Package`
     :raises: :exc:`InvalidPackage`
     """
-    import xmlschema
-    import xml.etree.ElementTree as ElementTree
 
     from .package import Package
     from .schemas import get_package_schema_path
