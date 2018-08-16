@@ -30,5 +30,5 @@ def tidy_xml(element):
 
 def pretty_xml(element):
     xmlstr = ElementTree.tostring(element, encoding='unicode', method='xml')
-    xmlstr = minidom.parseString(xmlstr).toprettyxml(indent='    ', newl='\n', encoding='utf-8')
+    xmlstr = minidom.parseString(xmlstr).toprettyxml(indent='  ', newl='\n', encoding='utf-8')
     return xmlstr.decode('utf-8')
