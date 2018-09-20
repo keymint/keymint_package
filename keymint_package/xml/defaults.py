@@ -59,13 +59,13 @@ def default_preprocessor(xsd_schema, xml_document, xml_document_defaults,
                         expecteds = [expecteds]
                     for i, expected in enumerate(expecteds):
                         index = chunk.index + i
-                        default_elem = defaults_data.find(expected)
+                        default_elem = defaults_data.find(expected.tag)
                         if default_elem is not None:
                             chunk.elem.insert(index, default_elem)
                             yield chunk
                             return
                         else:
-                            missing_elem = ElementTree.Element(expected)
+                            missing_elem = ElementTree.Element(expected.tag)
                             chunk.elem.insert(index, missing_elem)
                             yield chunk
                             return
