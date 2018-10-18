@@ -51,8 +51,8 @@ def default_preprocessor(xsd_schema, xml_document, xml_document_defaults,
 
     for chunk in iter_decoder:
         if isinstance(chunk, XMLSchemaValidationError):
-            if chunk.reason.startswith("The child n.") or \
-                chunk.reason.startswith("The content of element '"):
+            if chunk.reason.startswith("The content of element ") or \
+               chunk.reason.startswith("Unexpected child with tag "):
                 expecteds = chunk.expected
                 if expecteds:
                     if not isinstance(expecteds, (list, tuple)):
@@ -70,6 +70,14 @@ def default_preprocessor(xsd_schema, xml_document, xml_document_defaults,
                             yield chunk
                             return
                 else:
+                    print("##########")
+                    print("chunk.reason")
+                    print(chunk.reason)
+                    print("chunk.message")
+                    print(vars(chunk))
+                    print("chunk.elem")
+                    print(pretty_xml(chunk.elem))
+                    print("##########")
                     raise chunk
             elif chunk.reason.startswith("invalid literal for"):
                 expected = chunk.elem.tag

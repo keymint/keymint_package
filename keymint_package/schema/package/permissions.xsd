@@ -46,42 +46,18 @@
             <!-- TODO This xs:choice deviates from DDS, but is a workaround
             for unsorted criteria that collapsing comarmor profiles bring -->
             <xs:choice minOccurs="0" maxOccurs="unbounded">
-                <xs:sequence minOccurs="0" maxOccurs="unbounded"> <!-- DDSSEC-134 -->
-                    <xs:element name="publish" type="Criteria" />
-                </xs:sequence>
-                <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                    <xs:element name="subscribe" type="Criteria" />
-                </xs:sequence>
-                <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                    <xs:element name="relay" type="Criteria" />
-                </xs:sequence>
-                <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                    <xs:element name="ros_publish" type="RosTopicCriteria" />
-                </xs:sequence>
-                <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                    <xs:element name="ros_relay" type="RosTopicCriteria" />
-                </xs:sequence>
-                <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                    <xs:element name="ros_subscribe" type="RosTopicCriteria" />
-                </xs:sequence>
-                <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                    <xs:element name="ros_call" type="RosServiceCriteria" />
-                </xs:sequence>
-                <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                    <xs:element name="ros_execute" type="RosServiceCriteria" />
-                </xs:sequence>
-                <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                    <xs:element name="ros_request" type="RosActionCriteria" />
-                </xs:sequence>
-                <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                    <xs:element name="ros_operate" type="RosActionCriteria" />
-                </xs:sequence>
-                <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                    <xs:element name="ros_read" type="RosParameterCriteria" />
-                </xs:sequence>
-                <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                    <xs:element name="ros_write" type="RosParameterCriteria" />
-                </xs:sequence>
+                <xs:element name="publish" type="Criteria" maxOccurs="unbounded"/>
+                <xs:element name="subscribe" type="Criteria" maxOccurs="unbounded"/>
+                <xs:element name="relay" type="Criteria" maxOccurs="unbounded"/>
+                <xs:element name="ros_publish" type="RosTopicCriteria" maxOccurs="unbounded"/>
+                <xs:element name="ros_relay" type="RosTopicCriteria" maxOccurs="unbounded"/>
+                <xs:element name="ros_subscribe" type="RosTopicCriteria" maxOccurs="unbounded"/>
+                <xs:element name="ros_call" type="RosServiceCriteria" maxOccurs="unbounded"/>
+                <xs:element name="ros_execute" type="RosServiceCriteria" maxOccurs="unbounded"/>
+                <xs:element name="ros_request" type="RosActionCriteria" maxOccurs="unbounded"/>
+                <xs:element name="ros_operate" type="RosActionCriteria" maxOccurs="unbounded"/>
+                <xs:element name="ros_read" type="RosParameterCriteria" maxOccurs="unbounded"/>
+                <xs:element name="ros_write" type="RosParameterCriteria" maxOccurs="unbounded"/>
             </xs:choice>
         </xs:sequence>
     </xs:complexType>
