@@ -27,12 +27,11 @@ except ImportError:
     __version__ = 'unset'
 
 import os
-
 from xml.etree import cElementTree as ElementTree
 
-import xmlschema
-
 from keymint_package.xml.defaults import set_defaults
+
+import xmlschema
 
 PACKAGE_MANIFEST_FILENAME = 'keymint_package.xml'
 
@@ -110,7 +109,6 @@ def parse_package_string(data, path, *, filename=None):
     :returns: return parsed :class:`Package`
     :raises: :exc:`InvalidPackage`
     """
-
     from .package import Package
     from .schemas import get_package_schema_path
 
@@ -133,15 +131,13 @@ def parse_package_string(data, path, *, filename=None):
     pkg.package_format = int(value)
     assert pkg.package_format > 0, \
         ("Unable to handle '{filename}' format version '{format}', please update the "
-         "manifest file to at least format version 1").format(
-         filename=filename,
-         format=pkg.package_format)
+         'manifest file to at least format version 1')\
+        .format(filename=filename, format=pkg.package_format)
     assert pkg.package_format in [1], \
         ("Unable to handle '{filename}' format version '{format}', please update "
          "'keymint_package' (e.g. on Ubuntu/Debian use: sudo apt-get update && "
-         'sudo apt-get install --only-upgrade python-keymint-package)').format(
-         filename=filename,
-         format=pkg.package_format)
+         'sudo apt-get install --only-upgrade python-keymint-package)')\
+        .format(filename=filename, format=pkg.package_format)
 
     # name
     pkg.name = root.find('name').text

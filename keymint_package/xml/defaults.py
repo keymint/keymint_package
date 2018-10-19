@@ -20,6 +20,7 @@ from xmlschema.resources import load_xml_resource
 
 from .utils import pretty_xml
 
+
 def load_xml(xml_document):
 
     try:
@@ -31,7 +32,7 @@ def load_xml(xml_document):
             xml_root = load_xml_resource(xml_document)
     else:
         if not is_etree_element(xml_root):
-            raise XMLSchemaTypeError(
+            raise XMLSchemaValidationError(
                 "wrong type %r for 'xml_document' argument." % type(xml_document)
             )
     return xml_root
@@ -51,8 +52,8 @@ def default_preprocessor(xsd_schema, xml_document, xml_document_defaults,
 
     for chunk in iter_decoder:
         if isinstance(chunk, XMLSchemaValidationError):
-            if chunk.reason.startswith("The content of element ") or \
-               chunk.reason.startswith("Unexpected child with tag "):
+            if chunk.reason.startswith('The content of element ') or \
+               chunk.reason.startswith('Unexpected child with tag '):
                 expecteds = chunk.expected
                 if expecteds:
                     if not isinstance(expecteds, (list, tuple)):
@@ -70,16 +71,16 @@ def default_preprocessor(xsd_schema, xml_document, xml_document_defaults,
                             yield chunk
                             return
                 else:
-                    print("##########")
-                    print("chunk.reason")
+                    print('##########')
+                    print('chunk.reason')
                     print(chunk.reason)
-                    print("chunk.message")
+                    print('chunk.message')
                     print(vars(chunk))
-                    print("chunk.elem")
+                    print('chunk.elem')
                     print(pretty_xml(chunk.elem))
-                    print("##########")
+                    print('##########')
                     raise chunk
-            elif chunk.reason.startswith("invalid literal for"):
+            elif chunk.reason.startswith('invalid literal for'):
                 expected = chunk.elem.tag
                 default_elem = defaults_data.find(expected)
                 chunk.elem.text = default_elem.text
@@ -87,19 +88,19 @@ def default_preprocessor(xsd_schema, xml_document, xml_document_defaults,
                 return
             else:
                 # TODO: raise an informative error to user
-                print("##########")
-                print("chunk.reason")
+                print('##########')
+                print('chunk.reason')
                 print(chunk.reason)
-                print("chunk.message")
+                print('chunk.message')
                 print(vars(chunk))
-                print("chunk.elem")
+                print('chunk.elem')
                 print(pretty_xml(chunk.elem))
-                print("##########")
+                print('##########')
                 raise chunk
 
 
 def set_defaults(xsd_schema, data, defaults_data,
-                filename=None, path=None, use_defaults=False):
+                 filename=None, path=None, use_defaults=False):
 
     missing_error = True
     while missing_error:

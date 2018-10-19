@@ -12,9 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from xml.etree import cElementTree as ElementTree
-
 from xml.dom import minidom
+from xml.etree import cElementTree as ElementTree
 
 
 def tidy_xml(element):
