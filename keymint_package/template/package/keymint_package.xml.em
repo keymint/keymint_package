@@ -4,14 +4,14 @@
     format="1">
     <name>@pkg_name</name>
     <permissions format="@package_type">
-        <issuer_name>ca</issuer_name>
+        <issuer_name>permissions_ca</issuer_name>
         <permission>
           <permission_path>permissions.xml</permission_path>
           <defaults_path>package.defaults/permissions.xml</defaults_path>
         </permission>
     </permissions>
     <governances format="@package_type">
-        <issuer_name>ca</issuer_name>
+        <issuer_name>permissions_ca</issuer_name>
         <governance>
           <governance_path>governance.xml</governance_path>
           <defaults_path>package.defaults/governance.xml</defaults_path>
